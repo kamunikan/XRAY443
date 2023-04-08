@@ -28,10 +28,15 @@ vnstat -i eth1 --remove --force
 clear
 
 wget https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-64.zip
-sudo unzip Xray-linux-64.zip -d /usr/local/sbin/xray
-sudo chmod +x /usr/local/sbin/xray/xray
+sudo unzip Xray-linux-64.zip -d //usr/local/sbin/xray/
+sudo chmod +x /usr/local/sbin/xray/xray 
 
 sudo wget -O /etc/systemd/system/xray.service https://raw.githubusercontent.com/kamunikan/XRAY443/main/xray.service
+
+sudo mkdir -p /var/log/xray
+sudo chown root:root /var/log/xray
+sudo touch /var/log/xray/access.log
+sudo touch /var/log/xray/error.log
 
 
 clear
@@ -66,11 +71,22 @@ bash acme.sh --issue -d $domain --server letsencrypt --keylength ec-256 --fullch
 clear
 echo -e "${GB}[ INFO ]${NC} ${YB}Setup Nginx & Xray Conf${NC}"
 echo "UQ3w2q98BItd3DPgyctdoJw4cqQFmY59ppiDQdqMKbw=" > /usr/local/sbin/xray/serverpsk
-wget -q -O /usr/local/sbin/xray/config.json https://raw.githubusercontent.com/kamunikan/XRAY443/main/config.json
-wget -q -O /etc/nginx/nginx.conf https://raw.githubusercontent.com/kamunikan/XRAY443/main/nginx.conf
-wget -q -O /etc/nginx/conf.d/xray.conf https://raw.githubusercontent.com/kamunikan/XRAY443/main/xray.conf
+sudo wget -q -O /usr/local/sbin/xray/config.json https://raw.githubusercontent.com/kamunikan/XRAY443/main/config.json
+sudo wget -q -O /etc/nginx/nginx.conf https://raw.githubusercontent.com/kamunikan/XRAY443/main/nginx.conf
+sudo wget -q -O /etc/nginx/conf.d/xray.conf https://raw.githubusercontent.com/kamunikan/XRAY443/main/xray.conf
+wget -q -O /usr/local/sbin/menu "https://raw.githubusercontent.com/kamunikan/XRAY443/main/menu.sh" && chmod +x /usr/local/sbin/menu
+
+mkdir /etc/systemd/system/nginx.service.d
+printf "[Service]\nExecStartPost=/bin/sleep 0.1\n" > /etc/systemd/system/nginx.service.d/override.conf
+systemctl daemon-reload
 systemctl restart nginx
-systemctl restart xray
+
+systemctl daemon-reload
+systemctl enable xray
+systemctl start xray
+systemctl enable nginx
+systemctl start nginx
+
 echo -e "${GB}[ INFO ]${NC} ${YB}Setup Done${NC}"
 sleep 2
 clear
