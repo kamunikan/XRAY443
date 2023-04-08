@@ -40,8 +40,6 @@ sudo touch /var/log/xray/error.log
 
 
 clear
-sudo apt-get install lolcat -y
-clear
 curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash
 sudo apt-get install speedtest
 clear
@@ -75,6 +73,10 @@ sudo wget -q -O /usr/local/sbin/xray/config.json https://raw.githubusercontent.c
 sudo wget -q -O /etc/nginx/nginx.conf https://raw.githubusercontent.com/kamunikan/XRAY443/main/nginx.conf
 sudo wget -q -O /etc/nginx/conf.d/xray.conf https://raw.githubusercontent.com/kamunikan/XRAY443/main/xray.conf
 wget -q -O /usr/local/sbin/menu "https://raw.githubusercontent.com/kamunikan/XRAY443/main/menu.sh" && chmod +x /usr/local/sbin/menu
+
+wget -q -O /usr/local/sbin/add-vl "https://raw.githubusercontent.com/kamunikan/XRAY443/main/add-vl.sh" && chmod +x /usr/local/sbin/add-vl
+wget -q -O /usr/local/sbin/add-vm "https://raw.githubusercontent.com/kamunikan/XRAY443/main/add-vm.sh" && chmod +x /usr/local/sbin/add-vm
+wget -q -O /usr/local/sbin/add-tr "https://raw.githubusercontent.com/kamunikan/XRAY443/main/add-tr.sh" && chmod +x /usr/local/sbin/add-tr
 
 mkdir /etc/systemd/system/nginx.service.d
 printf "[Service]\nExecStartPost=/bin/sleep 0.1\n" > /etc/systemd/system/nginx.service.d/override.conf
@@ -154,29 +156,7 @@ menu
 END
 chmod 644 /root/.profile
 clear
-echo ""
-echo ""
-echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" | lolcat -a -d 10   
-echo ""
-echo -e "                  ${WB}XRAY SCRIPT BY Amaru Kael${NC}"
-echo ""
-echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" | lolcat -a -d 10 
-echo -e "  ${WB}»»» Protocol Service «««  |  »»» Network Protocol «««${NC}  "
-echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" | lolcat -a -d 10 
-echo -e "  ${YB}- Vless${NC}                   ${WB}|${NC}  ${YB}- Websocket (CDN) non TLS${NC}"
-echo -e "  ${YB}- Vmess${NC}                   ${WB}|${NC}  ${YB}- Websocket (CDN) TLS${NC}"
-echo -e "  ${YB}- Trojan${NC}                  ${WB}|${NC}  ${YB}- gRPC (CDN) TLS${NC}"
-echo -e "  ${YB}- Socks5${NC}                  ${WB}|${NC}"
-echo -e "  ${YB}- Shadowsocks${NC}             ${WB}|${NC}"
-echo -e "  ${YB}- Shadowsocks 2022${NC}        ${WB}|${NC}"
-echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" | lolcat -a -d 10 
-echo -e "               ${WB}»»» Network Port Service «««${NC}             "
-echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" | lolcat -a -d 10 
-echo -e "  ${YB}- HTTPS : 443, 2053, 2083, 2087, 2096, 8443${NC}"
-echo -e "  ${YB}- HTTP  : 80, 8080, 8880, 2052, 2082, 2086, 2095${NC}"
-echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" | lolcat -a -d 10 
-echo ""
-rm -f xray
+rm -f install.sh
 secs_to_human "$(($(date +%s) - ${start}))"
 echo -e "${YB}[ WARNING ] reboot now ? (Y/N)${NC} "
 read answer
